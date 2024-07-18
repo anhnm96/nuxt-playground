@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.border-base {
-  @apply border-gray-200 dark:border-gray-800;
+@layer utilities {
+  .border-base {
+    @apply border-gray-200 dark:border-gray-800;
+  }
+
+  .bg-active {
+    @apply bg-gray-700 bg-opacity-20;
+  }
 }

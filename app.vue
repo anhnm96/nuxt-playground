@@ -4,13 +4,14 @@ const color = useColorMode()
 </script>
 
 <template>
-  <div class="bg-red-500">
+  <main class="h-screen w-screen overflow-hidden">
+    <TheNav />
     {{ x }} {{ y }}
     {{ color }}
     <button @click="color.value = color.value === 'dark' ? 'light' : 'dark'">
       {{ color.value }}
     </button>
-  </div>
+  </main>
 </template>
 
 <style>
