@@ -10,4 +10,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/image',
   ],
+  colorMode: {
+    classSuffix: '',
+  },
 })

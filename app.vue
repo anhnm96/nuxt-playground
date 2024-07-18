@@ -14,7 +14,7 @@ const color = useColorMode()
 </template>
 
 <style>
-.dark-mode {
+.dark {
   color-scheme: dark;
 }
 </style>
