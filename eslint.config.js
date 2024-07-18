@@ -4,7 +4,6 @@ import nuxt from './.nuxt/eslint.config.mjs'
 
 export default antfu(
   {
-    formatters: true,
     rules: {
       'style/key-spacing': 'off',
       'style/object-curly-spacing': 'off',
