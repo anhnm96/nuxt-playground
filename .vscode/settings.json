@@ -23,5 +23,10 @@
     "json",
     "jsonc",
     "yaml"
-  ]
+  ],
+  // Set prettier as formatter for css files
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
 }
