@@ -7,6 +7,7 @@ export default antfu(
     rules: {
       'style/key-spacing': 'off',
       'style/object-curly-spacing': 'off',
+      'antfu/if-newline': 'off',
     },
   },
   nuxt,
