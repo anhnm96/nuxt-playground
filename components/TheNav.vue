@@ -7,6 +7,7 @@
       Nuxt Playground
     </div>
     <div class="flex items-center gap-1">
+      <ColorSchemeToggle />
       <NuxtLink
         class="hover:bg-active flex rounded p-2"
         title="GitHub"

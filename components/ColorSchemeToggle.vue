@@ -1,0 +1,14 @@
+<script lang="ts" setup>
+const colorMode = useColorMode()
+function toggleMode() {
+  return (colorMode.value = colorMode.value === 'light' ? 'dark' : 'light')
+}
+</script>
+
+<template>
+  <button class="hover:bg-active rounded p-2" @click="toggleMode">
+    <Icon
+      :name="colorMode.value === 'light' ? 'i-carbon-moon' : 'i-carbon-sun'"
+    />
+  </button>
+</template>
