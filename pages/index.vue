@@ -15,7 +15,7 @@ function end(e: { size: number }[]) {
 </script>
 
 <template>
-  <div class="bg-base h-screen w-screen overflow-hidden">
+  <div class="bg-base flex h-screen w-screen flex-col overflow-hidden">
     <TheNav />
     <Splitpanes class="flex h-full" @resize="start" @resized="end">
       <Pane :size="leftSize" min-size="10">

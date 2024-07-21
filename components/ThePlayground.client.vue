@@ -73,7 +73,7 @@ onMounted(startDevServer)
 <template>
   <Splitpanes
     horizontal
-    class="flex h-full flex-col pb-16"
+    class="flex h-full flex-col"
     @resize="startDragging"
     @resized="endDragging"
   >
