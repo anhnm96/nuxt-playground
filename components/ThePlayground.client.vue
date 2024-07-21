@@ -1,9 +1,16 @@
 <script setup lang="ts">
+// @ts-expect-error missing type
+import { Pane, Splitpanes } from 'splitpanes'
+
 const iframe = ref<HTMLIFrameElement>()
 const wcUrl = ref<string>()
 type Status = 'init' | 'mount' | 'install' | 'start' | 'ready' | 'error'
 const status = ref<Status>('init')
 const error = shallowRef<{ message: string }>()
+const isDragging = usePanelDragging()
+const panelSizeEditor = useLocalStorage('nuxt-playground-panel-editor', 30)
+const panelSizeFrame = useLocalStorage('nuxt-playground-panel-frame', 30)
+
 const stream = ref<ReadableStream>()
 async function startDevServer() {
   const tree = globFilesToWebContainerFs(
@@ -37,7 +44,7 @@ async function startDevServer() {
     throw new Error('Unable to run npm install')
   }
   status.value = 'start'
-  const devProcess = await wc.spawn('pnpm', ['run', 'dev'])
+  const devProcess = await wc.spawn('pnpm', ['dev'])
   stream.value = devProcess.output
 
   // In dev, when doing HMR, we kill the previous process while reusing the same WebContainer
@@ -47,6 +54,16 @@ async function startDevServer() {
     })
   }
 }
+
+function startDragging() {
+  isDragging.value = true
+}
+function endDragging(e: { size: number }[]) {
+  isDragging.value = false
+  panelSizeEditor.value = e[0].size
+  panelSizeFrame.value = e[1].size
+}
+
 watchEffect(() => {
   if (iframe.value && wcUrl.value) iframe.value.src = wcUrl.value
 })
@@ -54,8 +71,14 @@ onMounted(startDevServer)
 </script>
 
 <template>
-  <div class="flex h-full flex-col pb-16">
-    <div class="flex flex-auto items-center">
+  <Splitpanes
+    horizontal
+    class="flex h-full flex-col pb-16"
+    @resize="startDragging"
+    @resized="endDragging"
+  >
+    <Pane :size="panelSizeEditor" min-size="10"> [This is the editor] </Pane>
+    <Pane class="flex items-center">
       <iframe v-show="status === 'ready'" ref="iframe" class="h-full w-full" />
       <div
         v-if="status !== 'ready'"
@@ -64,7 +87,9 @@ onMounted(startDevServer)
         <Icon name="i-svg-spinners-90-ring-with-bg" />
         {{ status }}ing...
       </div>
-    </div>
-    <TerminalOutput :stream="stream" />
-  </div>
+    </Pane>
+    <Pane>
+      <TerminalOutput :stream="stream" />
+    </Pane>
+  </Splitpanes>
 </template>

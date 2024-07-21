@@ -20,3 +20,18 @@ body {
     @apply bg-white dark:bg-[#020420];
   }
 }
+
+/* overrides splitpanes */
+.splitpanes--vertical > .splitpanes__splitter {
+  width: 4px;
+  @apply border-base border;
+}
+
+.splitpanes--horizontal > .splitpanes__splitter {
+  height: 4px;
+  @apply border-base border;
+}
+
+.splitpanes--vertical .splitpanes__pane {
+  transition: none;
+}

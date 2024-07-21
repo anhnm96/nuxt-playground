@@ -1,15 +1,31 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// @ts-expect-error missing type
+import { Pane, Splitpanes } from 'splitpanes'
+
+const isDragging = usePanelDragging()
+const leftSize = useLocalStorage('nuxt-playground-panel-left', 30)
+
+function start() {
+  isDragging.value = true
+}
+function end(e: { size: number }[]) {
+  isDragging.value = false
+  leftSize.value = e[0].size
+}
+</script>
 
 <template>
   <div class="bg-base h-screen w-screen overflow-hidden">
     <TheNav />
-    <main class="flex h-full">
-      <article class="border-base dark:prose-invert prose w-1/3 border-r">
-        <ContentDoc />
-      </article>
-      <div class="w-2/3">
+    <Splitpanes class="flex h-full" @resize="start" @resized="end">
+      <Pane :size="leftSize" min-size="10">
+        <article class="dark:prose-invert prose">
+          <ContentDoc />
+        </article>
+      </Pane>
+      <Pane>
         <ThePlayground />
-      </div>
-    </main>
+      </Pane>
+    </Splitpanes>
   </div>
 </template>
