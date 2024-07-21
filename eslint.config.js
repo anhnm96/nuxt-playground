@@ -14,6 +14,6 @@ export default antfu(
   nuxt,
   eslintPluginPrettierRecommended,
   {
-    ignores: ['*.md'],
+    ignores: ['**/*.md'],
   },
 )
