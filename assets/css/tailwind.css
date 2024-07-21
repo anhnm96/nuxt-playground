@@ -24,12 +24,12 @@ body {
 /* overrides splitpanes */
 .splitpanes--vertical > .splitpanes__splitter {
   width: 4px;
-  @apply border-base border;
+  @apply border-base border-x;
 }
 
 .splitpanes--horizontal > .splitpanes__splitter {
   height: 4px;
-  @apply border-base border;
+  @apply border-base border-y;
 }
 
 .splitpanes--vertical .splitpanes__pane {
