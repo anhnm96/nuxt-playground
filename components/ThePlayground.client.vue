@@ -6,24 +6,12 @@ const status = ref<Status>('init')
 const error = shallowRef<{ message: string }>()
 const stream = ref<ReadableStream>()
 async function startDevServer() {
-  const rawFiles = import.meta.glob(
-    ['../templates/basic/*.*', '!**/node_modules/**'],
-    {
+  const tree = globFilesToWebContainerFs(
+    '../templates/basic/',
+    import.meta.glob(['../templates/basic/*.*', '!**/node_modules/**'], {
       query: '?raw',
       import: 'default',
       eager: true,
-    },
-  )
-  const files = Object.fromEntries(
-    Object.entries(rawFiles).map(([path, content]) => {
-      return [
-        path.replace('../templates/basic/', ''),
-        {
-          file: {
-            contents: content,
-          },
-        },
-      ]
     }),
   )
   const wc = await useWebContainer()
@@ -36,7 +24,7 @@ async function startDevServer() {
     error.value = err
   })
   status.value = 'mount'
-  await wc.mount(files)
+  await wc.mount(tree)
   status.value = 'install'
   const installProcess = await wc.spawn('pnpm', ['install'])
   stream.value = installProcess.output
@@ -73,7 +61,7 @@ onMounted(startDevServer)
         v-if="status !== 'ready'"
         class="mx-auto flex flex-col items-center justify-center text-lg capitalize"
       >
-        <div i-svg-spinners-90-ring-with-bg />
+        <Icon name="i-svg-spinners-90-ring-with-bg" />
         {{ status }}ing...
       </div>
     </div>

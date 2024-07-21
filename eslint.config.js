@@ -9,6 +9,7 @@ export default antfu(
       'style/object-curly-spacing': 'off',
       'antfu/if-newline': 'off',
       'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
+      'style/brace-style': ['error', '1tbs'],
     },
   },
   nuxt,
