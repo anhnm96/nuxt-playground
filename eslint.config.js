@@ -8,6 +8,7 @@ export default antfu(
       'style/key-spacing': 'off',
       'style/object-curly-spacing': 'off',
       'antfu/if-newline': 'off',
+      'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
     },
   },
   nuxt,

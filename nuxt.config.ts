@@ -10,9 +10,15 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/image',
     '@nuxt/icon',
+    '@nuxtjs/google-fonts',
   ],
   colorMode: {
     classSuffix: '',
+  },
+  googleFonts: {
+    families: {
+      'DM Sans': [300, 700],
+    },
   },
   nitro: {
     routeRules: {

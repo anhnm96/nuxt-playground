@@ -2,10 +2,10 @@
   <nav
     class="border-base flex items-center justify-between gap-1 border px-4 py-3 text-lg"
   >
-    <div>
+    <NuxtLink to="/" class="flex items-baseline gap-1 text-xl font-bold">
       <Icon name="i-logos-nuxt-icon" />
-      Nuxt Playground
-    </div>
+      <span>Nuxt Playground</span>
+    </NuxtLink>
     <div class="flex items-center gap-1">
       <ColorSchemeToggle />
       <NuxtLink

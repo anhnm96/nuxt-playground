@@ -1,9 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "dev": "nuxt dev"
+    "dev": "nuxt dev",
+    "prepare": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "latest"
+    "nuxt": "latest",
+    "vue": "latest"
   }
 }

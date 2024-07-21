@@ -9,7 +9,8 @@ async function startDevServer() {
   const rawFiles = import.meta.glob(
     ['../templates/basic/*.*', '!**/node_modules/**'],
     {
-      as: 'raw',
+      query: '?raw',
+      import: 'default',
       eager: true,
     },
   )
@@ -50,6 +51,13 @@ async function startDevServer() {
   status.value = 'start'
   const devProcess = await wc.spawn('pnpm', ['run', 'dev'])
   stream.value = devProcess.output
+
+  // In dev, when doing HMR, we kill the previous process while reusing the same WebContainer
+  if (import.meta.hot) {
+    import.meta.hot.accept(() => {
+      devProcess.kill()
+    })
+  }
 }
 watchEffect(() => {
   if (iframe.value && wcUrl.value) iframe.value.src = wcUrl.value

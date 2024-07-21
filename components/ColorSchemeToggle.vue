@@ -6,7 +6,7 @@ function toggleMode() {
 </script>
 
 <template>
-  <button class="hover:bg-active rounded p-2" @click="toggleMode">
+  <button class="hover:bg-active flex rounded p-2" @click="toggleMode">
     <Icon
       :name="colorMode.value === 'light' ? 'i-carbon-moon' : 'i-carbon-sun'"
     />

@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="h-screen w-screen overflow-hidden">
+  <div class="bg-base h-screen w-screen overflow-hidden">
     <TheNav />
     <main class="flex h-full">
       <div class="w-1/3">Content</div>
