@@ -84,15 +84,29 @@ onMounted(startDevServer)
     @resize="startDragging"
     @resized="endDragging"
   >
-    <Pane :size="panelSizeEditor" min-size="10"> [This is the editor] </Pane>
-    <Pane class="flex items-center">
-      <iframe v-show="status === 'ready'" ref="iframe" class="h-full w-full" />
+    <Pane :size="panelSizeEditor" min-size="10">
+      <PanelEditor />
+    </Pane>
+    <Pane class="flex flex-col">
       <div
-        v-if="status !== 'ready'"
-        class="mx-auto flex flex-col items-center justify-center text-lg capitalize"
+        class="border-base bg-faded flex items-center gap-2 border border-dashed px-4 py-2"
       >
-        <Icon name="i-svg-spinners-90-ring-with-bg" />
-        {{ status }}ing...
+        <Icon name="i-ph-globe-duotone" />
+        <span class="text-sm">Preview</span>
+      </div>
+      <div class="relative flex-grow">
+        <iframe
+          v-show="status === 'ready'"
+          ref="iframe"
+          class="h-full w-full"
+        />
+        <div
+          v-if="status !== 'ready'"
+          class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center text-lg capitalize"
+        >
+          <Icon name="i-svg-spinners-90-ring-with-bg" />
+          {{ status }}ing...
+        </div>
       </div>
     </Pane>
     <Pane>
