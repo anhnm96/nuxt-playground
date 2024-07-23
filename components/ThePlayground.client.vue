@@ -15,11 +15,14 @@ const stream = ref<ReadableStream>()
 async function startDevServer() {
   const tree = globFilesToWebContainerFs(
     '../templates/basic/',
-    import.meta.glob(['../templates/basic/*.*', '!**/node_modules/**'], {
-      query: '?raw',
-      import: 'default',
-      eager: true,
-    }),
+    import.meta.glob(
+      ['../templates/basic/*.*', '!**/node_modules/**', '!../.DS_Store'],
+      {
+        query: '?raw',
+        import: 'default',
+        eager: true,
+      },
+    ),
   )
   const wc = await useWebContainer()
   wc.on('server-ready', (port, url) => {
@@ -93,7 +96,7 @@ onMounted(startDevServer)
       </div>
     </Pane>
     <Pane>
-      <TerminalOutput :stream="stream" />
+      <PanelTerminal :stream="stream" />
     </Pane>
   </Splitpanes>
 </template>

@@ -10,7 +10,13 @@ module.exports = {
     './error.vue',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#00DC82',
+        },
+      },
+    },
   },
   plugins: [require('@tailwindcss/typography')],
   colorMode: {

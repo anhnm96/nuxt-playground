@@ -8,7 +8,11 @@ function toggleMode() {
 <template>
   <button class="hover:bg-active flex rounded p-2" @click="toggleMode">
     <Icon
-      :name="colorMode.value === 'light' ? 'i-carbon-sun' : 'i-carbon-moon'"
+      :name="
+        colorMode.value === 'light'
+          ? 'i-ph-sun-dim-duotone'
+          : 'i-ph-moon-stars-duotone'
+      "
     />
   </button>
 </template>

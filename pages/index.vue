@@ -19,9 +19,7 @@ function end(e: { size: number }[]) {
     <TheNav />
     <Splitpanes class="flex h-full" @resize="start" @resized="end">
       <Pane :size="leftSize" min-size="10">
-        <article class="dark:prose-invert prose">
-          <ContentDoc />
-        </article>
+        <PanelGuide />
       </Pane>
       <Pane>
         <ThePlayground />

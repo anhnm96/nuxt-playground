@@ -18,6 +18,7 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       'DM Sans': [300, 700],
+      'DM Mono': [400],
     },
   },
   nitro: {

@@ -33,6 +33,7 @@ useResizeObserver(
 
 onMounted(() => {
   terminal.open(root.value!)
+  terminal.write('\n')
   fitAddon.fit()
 })
 </script>

@@ -35,3 +35,33 @@ body {
 .splitpanes--vertical .splitpanes__pane {
   transition: none;
 }
+
+.terminal.xterm {
+  padding: 0 1.5em;
+}
+
+.terminal.xterm .xterm-rows {
+  font-family: 'DM Mono';
+}
+
+.animated-gradient-text {
+  --bg-size: 400%;
+  --color-one: var(--animated-gradient-color-one);
+  --color-two: var(--animated-gradient-color-two);
+  background: linear-gradient(
+      90deg,
+      var(--color-one),
+      var(--color-two),
+      var(--color-one)
+    )
+    0 0 / var(--bg-size) 100%;
+  animation: move-bg 8s infinite linear;
+  color: transparent;
+  background-clip: text;
+}
+
+@keyframes move-bg {
+  to {
+    background-position: calc(var(--bg-size) * -1) 0;
+  }
+}
