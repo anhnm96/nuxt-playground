@@ -39,13 +39,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid h-full grid-rows-[min-content_1fr]">
+  <div class="flex h-full flex-col">
     <div
       class="border-base bg-faded flex items-center gap-2 border-b border-dashed px-4 py-2"
     >
       <Icon name="i-ph-terminal-window-duotone" />
       <span class="text-sm">Terminal</span>
     </div>
-    <div ref="root" class="h-full w-full" />
+    <div ref="root" class="h-full flex-grow" />
   </div>
 </template>

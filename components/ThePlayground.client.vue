@@ -16,7 +16,7 @@ async function startDevServer() {
   const tree = globFilesToWebContainerFs(
     '../templates/basic/',
     import.meta.glob(
-      ['../templates/basic/*.*', '!**/node_modules/**', '!../.DS_Store'],
+      ['../templates/basic/*.*', '../templates/basic/**/.npmrc'],
       {
         query: '?raw',
         import: 'default',
