@@ -31,11 +31,16 @@ useResizeObserver(
   useDebounceFn(() => fitAddon.fit(), 200),
 )
 
-onMounted(() => {
-  terminal.open(root.value!)
-  terminal.write('\n')
-  fitAddon.fit()
-})
+const stop = watch(
+  () => root.value,
+  (el) => {
+    if (!el) return
+    terminal.open(el)
+    terminal.write('\n')
+    fitAddon.fit()
+    stop()
+  },
+)
 </script>
 
 <template>
@@ -46,6 +51,6 @@ onMounted(() => {
       <Icon name="i-ph-terminal-window-duotone" />
       <span class="text-sm">Terminal</span>
     </div>
-    <div ref="root" class="h-full flex-grow" />
+    <div ref="root" style="height: calc(100% - 37px)" />
   </div>
 </template>

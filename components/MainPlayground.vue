@@ -1,0 +1,52 @@
+<script setup lang="ts">
+// @ts-expect-error missing type
+import { Pane, Splitpanes } from 'splitpanes'
+
+const isDragging = usePanelDragging()
+const stream = useTerminalStream()
+const panelSizeEditor = usePanelCookie('nuxt-playground-panel-editor', 30)
+const panelSizeFrame = usePanelCookie('nuxt-playground-panel-frame', 30)
+const panelSizeGuide = usePanelCookie('nuxt-playground-panel-guide', 30)
+function startDragging() {
+  isDragging.value = true
+}
+function endDraggingVertical(e: { size: number }[]) {
+  isDragging.value = false
+  panelSizeGuide.value = e[0].size
+}
+function endDraggingHorizontal(e: { size: number }[]) {
+  isDragging.value = false
+  panelSizeEditor.value = e[0].size
+  panelSizeFrame.value = e[1].size
+}
+</script>
+
+<template>
+  <Splitpanes
+    class="flex h-full"
+    @resize="startDragging"
+    @resized="endDraggingVertical"
+  >
+    <Pane :size="panelSizeGuide" min-size="10">
+      <PanelGuide />
+    </Pane>
+    <Pane :size="100 - panelSizeGuide">
+      <Splitpanes
+        horizontal
+        class="flex h-full flex-col"
+        @resize="startDragging"
+        @resized="endDraggingHorizontal"
+      >
+        <Pane :size="panelSizeEditor" min-size="10">
+          <PanelEditor />
+        </Pane>
+        <Pane :size="panelSizeFrame" min-size="10">
+          <PanelPreview />
+        </Pane>
+        <Pane :size="100 - panelSizeEditor - panelSizeFrame">
+          <PanelTerminal :stream="stream" />
+        </Pane>
+      </Splitpanes>
+    </Pane>
+  </Splitpanes>
+</template>
