@@ -1,4 +1,25 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { VirtualFile } from '~/structures/VirtualFile'
+// TODO: replace with Monaco with a real file tree.
+withDefaults(
+  defineProps<{
+    files: VirtualFile[]
+  }>(),
+  {
+    files: () => [],
+  },
+)
+const selectedFile = ref<VirtualFile>()
+const input = ref<string>()
+function selectFile(file: VirtualFile) {
+  selectedFile.value = file
+  input.value = file.read()
+}
+function onTextInput() {
+  // TODO: add throttle
+  if (input.value != null) selectedFile?.value?.write(input.value)
+}
+</script>
 
 <template>
   <div class="grid h-full grid-rows-[min-content_1fr]">
@@ -8,6 +29,25 @@
       <Icon name="i-ph-text-t-duotone" />
       <span class="text-sm">Editor</span>
     </div>
-    <div class="p-4">[TODO: This is the editor]</div>
+    <div class="grid grid-cols-[1fr_2fr]">
+      <div class="flex h-full flex-col">
+        <button
+          v-for="file in files"
+          :key="file.filepath"
+          class="hover:bg-active px-2 py-1 text-left"
+          :class="{
+            'text-primary': file.filepath === selectedFile?.filepath,
+          }"
+          @click="selectFile(file)"
+        >
+          {{ file.filepath }}
+        </button>
+      </div>
+      <textarea
+        v-model="input"
+        class="border-base h-full w-full border-l bg-transparent p-4 font-mono"
+        @input="onTextInput"
+      />
+    </div>
   </div>
 </template>

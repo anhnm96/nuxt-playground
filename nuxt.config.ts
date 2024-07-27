@@ -15,6 +15,9 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: '',
   },
+  typescript: {
+    includeWorkspace: true,
+  },
   googleFonts: {
     families: {
       'DM Sans': [300, 700],

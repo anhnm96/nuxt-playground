@@ -11,6 +11,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        mono: ['DM Mono'],
+      },
       colors: {
         primary: {
           DEFAULT: '#00DC82',
