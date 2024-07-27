@@ -1,5 +1,5 @@
 import { WebContainer } from '@webcontainer/api'
-import type { PlaygroundState } from '../stores/playground'
+import type { UnwrapPlaygroundState } from '../stores/playground'
 import { loadTemplate } from '~/templates/basic'
 
 if (import.meta.server)
@@ -12,7 +12,7 @@ export async function useWebContainer() {
   return await _webcontainerPromise
 }
 
-export async function mountPlayground(play: PlaygroundState) {
+export async function mountPlayground(play: UnwrapPlaygroundState) {
   const { files, tree } = loadTemplate()
 
   window.addEventListener('message', (event) => {
@@ -29,6 +29,7 @@ export async function mountPlayground(play: PlaygroundState) {
 
   const wc = await useWebContainer()
 
+  play.webcontainer = wc
   play.files = files
   files.forEach((file) => {
     file.wc = wc

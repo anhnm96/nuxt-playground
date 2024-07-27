@@ -1,3 +1,5 @@
+import type { Ref, UnwrapNestedRefs } from 'vue'
+import type { WebContainer } from '@webcontainer/api'
 import type { VirtualFile } from '../structures/VirtualFile'
 
 export type PlaygroundStatus =
@@ -13,33 +15,35 @@ export interface PlaygroundState {
   status: PlaygroundStatus
   error: { message: string } | undefined
   stream: ReadableStream | undefined
-  previewUrl: string
-  previewLocation: {
+  webcontainer: WebContainer | undefined
+  previewUrl: ComputedRef<string>
+  previewLocation: Ref<{
     origin: string
     fullPath: string
-  }
+  }>
 }
 
-export const usePlaygroundStore = defineStore('playground', () => {
-  const status = ref<PlaygroundStatus>('init')
-  const error = shallowRef<{ message: string }>()
-  const stream = ref<ReadableStream | undefined>()
+export type UnwrapPlaygroundState = UnwrapNestedRefs<PlaygroundState>
 
-  const previewLocation = ref({
-    origin: '',
-    fullPath: '',
-  })
-  const previewUrl = computed(
-    () => previewLocation.value.origin + previewLocation.value.fullPath,
-  )
+export const usePlaygroundStore = defineStore(
+  'playground',
+  (): PlaygroundState => {
+    const previewLocation = ref({
+      origin: '',
+      fullPath: '',
+    })
+    const previewUrl = computed(
+      () => previewLocation.value.origin + previewLocation.value.fullPath,
+    )
 
-  return {
-    files: [],
-    status,
-    error,
-    stream,
-    previewUrl,
-    previewLocation,
-  }
-  // TODO: find a way to type this
-})
+    return {
+      status: 'init',
+      error: undefined,
+      stream: undefined,
+      files: [],
+      webcontainer: undefined,
+      previewUrl,
+      previewLocation,
+    }
+  },
+)
