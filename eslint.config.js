@@ -10,6 +10,7 @@ export default antfu(
       'antfu/if-newline': 'off',
       'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
       'style/brace-style': ['error', '1tbs'],
+      'style/arrow-parens': 'off',
     },
   },
   nuxt,

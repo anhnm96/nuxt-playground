@@ -1,6 +1,6 @@
 import { WebContainer } from '@webcontainer/api'
 import type { UnwrapPlaygroundState } from '../stores/playground'
-import { loadTemplate } from '~/templates/basic'
+import { templates } from '~/templates'
 
 if (import.meta.server)
   throw new Error('WebContainer cannot be mounted on server')
@@ -13,7 +13,7 @@ export async function useWebContainer() {
 }
 
 export async function mountPlayground(play: UnwrapPlaygroundState) {
-  const { files, tree } = loadTemplate()
+  const { files, tree } = await templates.basic()
 
   window.addEventListener('message', (event) => {
     if (event.origin !== play.previewLocation.origin) return
