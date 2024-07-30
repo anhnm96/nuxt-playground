@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const colorMode = useColorMode()
 function toggleMode() {
-  return (colorMode.value = colorMode.value === 'light' ? 'dark' : 'light')
+  return (colorMode.preference = colorMode.value === 'light' ? 'dark' : 'light')
 }
 </script>
 
