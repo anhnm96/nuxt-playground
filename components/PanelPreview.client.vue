@@ -1,8 +1,7 @@
 <script setup lang="ts">
-const ui = useUiState()
 const play = usePlaygroundStore()
 
-const iframe = ref<HTMLIFrameElement>()
+const inner = ref<{ iframe?: HTMLIFrameElement | undefined }>()
 const inputUrl = ref<string>('')
 // auto update inputUrl when location value changed
 syncRef(
@@ -11,8 +10,8 @@ syncRef(
   { direction: 'ltr' },
 )
 function refreshIframe() {
-  if (play.previewUrl && iframe.value) {
-    iframe.value.src = play.previewUrl
+  if (play.previewUrl && inner.value?.iframe) {
+    inner.value.iframe.src = play.previewUrl
     inputUrl.value = play.previewLocation.fullPath
   }
 }
@@ -21,9 +20,6 @@ function navigate() {
   const activeElement = document.activeElement
   if (activeElement instanceof HTMLElement) activeElement.blur()
 }
-onMounted(() => {
-  mountPlayground(play)
-})
 </script>
 
 <template>
@@ -58,21 +54,8 @@ onMounted(() => {
       </div>
     </div>
     <div class="relative flex-grow">
-      <iframe
-        v-if="play.previewUrl"
-        ref="iframe"
-        class="h-full w-full"
-        :class="{ 'pointer-events-none': ui.isPanelDragging }"
-        :src="play.previewUrl"
-        allow="geolocation; microphone; camera; payment; autoplay; serial; cross-origin-isolated"
-      />
-      <div
-        v-if="play.status !== 'ready'"
-        class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center text-lg capitalize"
-      >
-        <Icon name="ph:spinner-ball" class="animate-spin text-primary" />
-        {{ play.status }}ing...
-      </div>
+      <PanelPreviewLoading />
+      <PanelPreviewClient ref="inner" />
     </div>
   </div>
 </template>
