@@ -1,11 +1,27 @@
 <script setup lang="ts">
 const ui = useUiState()
 const play = usePlaygroundStore()
+const colorMode = useColorMode()
 
 const iframe = ref<HTMLIFrameElement>()
 
+function onIframeLoad() {
+  syncColorMode()
+}
+
+function syncColorMode() {
+  iframe.value?.contentWindow?.postMessage(
+    {
+      type: 'color-mode',
+      mode: colorMode.value,
+    },
+    '*',
+  )
+}
+watch(colorMode, syncColorMode, { flush: 'sync' })
+
 onMounted(() => {
-  mountPlayground(play)
+  mountPlayground(play, colorMode.value)
 })
 
 defineExpose({
@@ -21,5 +37,6 @@ defineExpose({
     :class="{ 'pointer-events-none': ui.isPanelDragging }"
     :src="play.previewUrl"
     allow="geolocation; microphone; camera; payment; autoplay; serial; cross-origin-isolated"
+    @load="onIframeLoad"
   />
 </template>

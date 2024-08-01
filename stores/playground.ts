@@ -49,3 +49,6 @@ export const usePlaygroundStore = defineStore(
     }
   },
 )
+
+if (import.meta.hot)
+  import.meta.hot.accept(acceptHMRUpdate(usePlaygroundStore, import.meta.hot))

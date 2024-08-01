@@ -1,75 +1,29 @@
-# Nuxt 3 Minimal Starter
+# Nuxt 3 Playground - Folow along with antfu's stream
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Setup
+## Notes
+### Color mode setup
+### Concurent boot
+```typescript
+let _webcontainerPromise: Promise<WebContainer>
 
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+export async function useWebContainer() {
+  if (!_webcontainerPromise) _webcontainerPromise = WebContainer.boot()
+  return await _webcontainerPromise
+}
 ```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+### Loading async template
+```typescript
+// basic.ts
+export default function load() {
+  // ...
+  return { files, tree }
+}
+// index.ts
+export const templates = {
+  basic: () => import('./basic').then((m) => m.default()),
+}
+// usage
+const { files, tree } = await templates.basic()
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

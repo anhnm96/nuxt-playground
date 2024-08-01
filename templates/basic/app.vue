@@ -14,9 +14,29 @@ if (process.client) {
     },
     { immediate: true },
   )
+
+  window.addEventListener('message', (event) => {
+    switch (event.data.type) {
+      case 'color-mode':
+        document.documentElement.classList.toggle(
+          'dark',
+          event.data.mode === 'dark',
+        )
+        break
+      default:
+        break
+    }
+  })
 }
 </script>
 
 <template>
   <NuxtWelcome />
 </template>
+
+<style>
+html.dark {
+  color-scheme: dark;
+  background: #020420;
+}
+</style>
