@@ -36,6 +36,9 @@ defineExpose({
     class="h-full w-full"
     :class="{ 'pointer-events-none': ui.isPanelDragging }"
     :src="play.previewUrl"
+    :style="
+      play.status === 'ready' ? '' : 'opacity: 0.001; pointer-events: none;'
+    "
     allow="geolocation; microphone; camera; payment; autoplay; serial; cross-origin-isolated"
     @load="onIframeLoad"
   />

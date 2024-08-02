@@ -15,6 +15,13 @@ if (process.client) {
     { immediate: true },
   )
 
+  window.parent.postMessage(
+    {
+      type: 'ready',
+    },
+    '*',
+  )
+
   window.addEventListener('message', (event) => {
     switch (event.data.type) {
       case 'color-mode':
