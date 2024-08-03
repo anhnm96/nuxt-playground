@@ -17,6 +17,9 @@ importers:
       '@xterm/xterm':
         specifier: ^5.5.0
         version: 5.5.0
+      birpc:
+        specifier: ^0.2.17
+        version: 0.2.17
       nuxt:
         specifier: ^3.12.3
         version: 3.12.4(@parcel/watcher@2.4.1)(@types/node@20.14.11)(eslint@9.7.0)(ioredis@5.4.1)(magicast@0.3.4)(optionator@0.9.4)(rollup@4.19.0)(terser@5.31.3)(typescript@5.5.3)(vite@5.3.4(@types/node@20.14.11)(terser@5.31.3))
