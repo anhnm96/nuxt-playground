@@ -11,6 +11,7 @@ export default antfu(
       'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
       'style/brace-style': ['error', '1tbs'],
       'style/arrow-parens': 'off',
+      'style/operator-linebreak': 'off',
     },
   },
   nuxt,

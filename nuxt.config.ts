@@ -13,6 +13,11 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@pinia/nuxt',
   ],
+  app: {
+    head: {
+      titleTemplate: '%s - Nuxt Playground',
+    },
+  },
   colorMode: {
     classSuffix: '',
   },

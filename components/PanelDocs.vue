@@ -6,9 +6,9 @@
       class="border-base bg-faded flex items-center gap-2 border-b border-dashed px-4 py-2"
     >
       <Icon name="i-ph-book-duotone" />
-      <span text-sm>Guide</span>
+      <span class="text-sm">Guide</span>
     </div>
-    <article class="prose dark:prose-invert">
+    <article class="prose overflow-auto dark:prose-invert">
       <ContentDoc />
     </article>
   </div>

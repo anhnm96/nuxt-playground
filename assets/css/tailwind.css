@@ -76,8 +76,8 @@ body {
   @apply border-base border-b;
 }
 
-.splitpanes--vertical .splitpanes__pane {
-  transition: none;
+.splitpanes__splitter:has(+ .pane-hidden) {
+  display: none;
 }
 
 .terminal.xterm {

@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const ui = useUiState()
+</script>
+
 <template>
   <nav
     class="border-base flex items-center justify-between gap-1 border px-4 py-3 text-lg"
@@ -14,6 +18,13 @@
       >
     </NuxtLink>
     <div class="flex items-center gap-1">
+      <button
+        class="hover:bg-active flex rounded p-2"
+        :class="ui.showTerminal ? '' : 'opacity-50'"
+        @click="ui.toggleTerminal()"
+      >
+        <Icon name="i-ph-terminal-window-duotone" class="text-2xl" />
+      </button>
       <ColorSchemeToggle />
       <NuxtLink
         class="hover:bg-active flex rounded p-2"
