@@ -23,6 +23,11 @@ export interface PlaygroundState {
     origin: string
     fullPath: string
   }>
+  actions: PlaygroundActions
+}
+
+export interface PlaygroundActions {
+  restartServer: () => Promise<void>
 }
 
 export type UnwrapPlaygroundState = UnwrapNestedRefs<PlaygroundState>
@@ -38,6 +43,10 @@ export const usePlaygroundStore = defineStore(
       () => previewLocation.value.origin + previewLocation.value.fullPath,
     )
 
+    const actions: PlaygroundActions = {
+      async restartServer() {},
+    }
+
     return {
       status: 'init',
       error: undefined,
@@ -46,6 +55,7 @@ export const usePlaygroundStore = defineStore(
       webcontainer: undefined,
       previewUrl,
       previewLocation,
+      actions,
     }
   },
 )

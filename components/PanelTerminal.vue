@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const ui = useUiState()
+const play = usePlaygroundStore()
 </script>
 
 <template>
@@ -9,12 +10,22 @@ const ui = useUiState()
     >
       <Icon name="i-ph-terminal-window-duotone" />
       <span class="text-sm">Terminal</span>
-      <button
-        class="hover:bg-active ml-auto flex rounded p-1"
-        @click="ui.toggleTerminal()"
-      >
-        <Icon name="i-ph-x-bold" />
-      </button>
+      <div class="ml-auto flex gap-2">
+        <button
+          class="hover:bg-active flex rounded p-1"
+          title="Restart terminal"
+          @click="play.actions.restartServer()"
+        >
+          <Icon name="i-ph-arrow-clockwise-duotone" />
+        </button>
+        <button
+          class="hover:bg-active flex rounded p-1"
+          title="Hide terminal"
+          @click="ui.toggleTerminal()"
+        >
+          <Icon name="i-ph-x-bold" />
+        </button>
+      </div>
     </div>
     <PanelTerminalClient />
   </div>
