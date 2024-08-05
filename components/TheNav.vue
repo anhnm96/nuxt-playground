@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const ui = useUiState()
+const play = usePlaygroundStore()
 </script>
 
 <template>
@@ -19,8 +20,17 @@ const ui = useUiState()
     </NuxtLink>
     <div class="flex items-center gap-1">
       <button
+        v-if="play.status === 'ready'"
+        class="hover:bg-active flex rounded p-2"
+        title="Download as ZIP"
+        @click="play.actions.downloadZip()"
+      >
+        <Icon name="i-ph-download-duotone" class="text-2xl" />
+      </button>
+      <button
         class="hover:bg-active flex rounded p-2"
         :class="ui.showTerminal ? '' : 'opacity-50'"
+        title="Toggle terminal"
         @click="ui.toggleTerminal()"
       >
         <Icon name="i-ph-terminal-window-duotone" class="text-2xl" />
