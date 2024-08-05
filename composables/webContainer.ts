@@ -17,16 +17,12 @@ export async function mountPlayground(
   play: UnwrapPlaygroundState,
   colorMode: string,
 ) {
-  const { files, tree } = await templates.basic()
-
-  // Inject .nuxtrc so that we can have the color mode on initial load
-  if (colorMode === 'dark') {
-    tree['.nuxtrc'] = {
-      file: {
-        contents: `app.head.htmlAttrs.class=dark`,
-      },
-    }
-  }
+  const { files, tree } = await templates.basic({
+    nuxtrc: [
+      // Have color mode on initial load
+      colorMode === 'dark' ? 'app.head.htmlAttrs.class=dark' : '',
+    ],
+  })
 
   const wc = await useWebContainer()
 
