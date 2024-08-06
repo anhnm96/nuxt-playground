@@ -1,3 +1,1 @@
-export default defineNuxtConfig({
-  devtools: { enabled: false },
-})
+export default defineNuxtConfig({})
