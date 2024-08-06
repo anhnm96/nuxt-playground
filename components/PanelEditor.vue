@@ -56,7 +56,7 @@ function onTextInput() {
       </div>
       <textarea
         v-model="input"
-        class="border-base h-full w-full border-l bg-transparent p-4 font-mono"
+        class="border-base h-full w-full resize-none border-l bg-transparent p-4 font-mono"
         @input="onTextInput"
       />
     </div>

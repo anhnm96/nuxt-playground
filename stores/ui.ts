@@ -3,7 +3,7 @@ export const useUiState = defineStore('ui', () => {
 
   const persistState = reactive({
     panelDocs: 30,
-    panelEditor: 30,
+    panelEditor: 60,
     panelPreview: 40,
     showTerminal: false,
   })
