@@ -81,7 +81,7 @@ export async function mountPlayground(
     }
 
     play.status = 'start'
-    processDev = await wc.spawn('pnpm', ['dev'])
+    processDev = await wc.spawn('pnpm', ['dev', '--no-qr'])
     play.stream = processDev.output
   }
 
