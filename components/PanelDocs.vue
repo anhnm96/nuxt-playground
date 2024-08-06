@@ -8,7 +8,7 @@
       <Icon name="i-ph-book-duotone" />
       <span class="text-sm">Guide</span>
     </div>
-    <article class="prose overflow-auto dark:prose-invert">
+    <article class="prose max-w-none overflow-auto dark:prose-invert">
       <ContentDoc />
     </article>
   </div>

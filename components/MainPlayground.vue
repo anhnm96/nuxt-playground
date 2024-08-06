@@ -88,7 +88,7 @@ const panelInitTerminal = computed(
           :style="panelInitEditor"
           class="min-h-0"
         >
-          <PanelEditor :files="play?.files as VirtualFile[]" />
+          <PanelEditor :files="play.files" />
         </Pane>
         <div class="splitpanes__splitter" />
         <Pane :size="ui.panelPreview" min-size="10" :style="panelInitPreview">

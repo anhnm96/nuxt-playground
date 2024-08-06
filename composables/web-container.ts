@@ -1,6 +1,6 @@
 import type { WebContainerProcess } from '@webcontainer/api'
 import { WebContainer } from '@webcontainer/api'
-import type { UnwrapPlaygroundState } from '../stores/playground'
+import type { PlaygroundStore } from '~/stores/playground'
 import { templates } from '~/templates'
 
 if (import.meta.server)
@@ -14,7 +14,7 @@ export async function useWebContainer() {
 }
 
 export async function mountPlayground(
-  play: UnwrapPlaygroundState,
+  play: PlaygroundStore,
   colorMode: string,
 ) {
   const { files, tree } = await templates.basic({
