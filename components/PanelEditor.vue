@@ -59,6 +59,7 @@ function onTextInput() {
         v-model="input"
         :filepath="selectedFile.filepath"
         class="h-full w-full"
+        @change="onTextInput"
       />
     </div>
   </div>

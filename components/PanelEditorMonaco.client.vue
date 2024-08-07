@@ -6,6 +6,12 @@ const props = defineProps<{
   modelValue: string
   filepath: string
 }>()
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: string): void
+  (event: 'change', value: string): void
+}>()
+
 const el = ref<HTMLDivElement>()
 const models = new Map<string, monaco.editor.ITextModel>()
 const language = computed(() => {
@@ -53,6 +59,12 @@ watch(
         enabled: false,
       },
     })
+
+    editor.onDidChangeModelContent(() => {
+      emit('update:modelValue', editor.getValue())
+      emit('change', editor.getValue())
+    })
+
     watch(
       () => props.filepath,
       () => {
