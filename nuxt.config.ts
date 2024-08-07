@@ -42,6 +42,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
+      // setup monaco
       headers: {
         'Cross-Origin-Embedder-Policy': 'require-corp',
         'Cross-Origin-Opener-Policy': 'same-origin',

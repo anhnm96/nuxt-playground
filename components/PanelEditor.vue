@@ -21,7 +21,7 @@ watchEffect(() => {
     selectFile(files.value[0])
 })
 
-const input = ref<string>()
+const input = ref<string>('')
 function selectFile(file: VirtualFile) {
   selectedFile.value = file
   input.value = file.read()
@@ -54,10 +54,11 @@ function onTextInput() {
           {{ file.filepath }}
         </button>
       </div>
-      <textarea
+      <PanelEditorMonaco
+        v-if="selectedFile"
         v-model="input"
-        class="border-base h-full w-full resize-none border-l bg-transparent p-4 font-mono"
-        @input="onTextInput"
+        :filepath="selectedFile.filepath"
+        class="h-full w-full"
       />
     </div>
   </div>
