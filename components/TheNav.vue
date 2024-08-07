@@ -23,7 +23,7 @@ const play = usePlaygroundStore()
         v-if="play.status === 'ready'"
         class="hover:bg-active flex rounded p-2"
         title="Download as ZIP"
-        @click="play.actions.downloadZip()"
+        @click="play.downloadZip()"
       >
         <Icon name="i-ph-download-duotone" class="text-2xl" />
       </button>

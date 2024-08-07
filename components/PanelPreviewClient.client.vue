@@ -43,10 +43,6 @@ function syncColorMode() {
 }
 watch(colorMode, syncColorMode, { flush: 'sync' })
 
-onMounted(async () => {
-  await mountPlayground(play, colorMode.value)
-})
-
 defineExpose({
   iframe,
 })
