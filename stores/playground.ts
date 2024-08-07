@@ -23,9 +23,12 @@ export const usePlaygroundStore = defineStore('playground', () => {
     origin: '',
     fullPath: '',
   })
-  const previewUrl = computed(
-    () => previewLocation.value.origin + previewLocation.value.fullPath,
-  )
+  const previewUrl = ref('')
+
+  function updatePreviewUrl() {
+    previewUrl.value =
+      previewLocation.value.origin + previewLocation.value.fullPath
+  }
 
   const colorMode = useColorMode()
 
@@ -62,6 +65,7 @@ export const usePlaygroundStore = defineStore('playground', () => {
             origin: url,
             fullPath: '/',
           }
+          updatePreviewUrl()
         }
       })
 
@@ -167,6 +171,7 @@ export const usePlaygroundStore = defineStore('playground', () => {
     files,
     webcontainer,
     previewUrl,
+    updatePreviewUrl,
     previewLocation,
     restartServer: startServer,
     downloadZip,
