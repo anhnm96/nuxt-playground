@@ -13,6 +13,7 @@ const emit = defineEmits<{
 }>()
 
 const el = ref<HTMLDivElement>()
+const colorMode = useColorMode()
 const models = new Map<string, monaco.editor.ITextModel>()
 const language = computed(() => {
   const ext = props.filepath.split('.').pop()
@@ -32,6 +33,10 @@ const language = computed(() => {
       return 'plaintext'
   }
 })
+const theme = computed(() =>
+  colorMode.value === 'dark' ? 'vs-dark' : 'vs-light',
+)
+
 function getModel(filepath: string) {
   let model: monaco.editor.ITextModel
   if (!models.has(filepath)) {
@@ -53,7 +58,12 @@ watch(
     if (!value) return
     const editor = monaco.editor.create(value, {
       model: getModel(props.filepath),
-      theme: 'vs-dark',
+      theme: theme.value,
+      fontSize: 14,
+      bracketPairColorization: {
+        enabled: false,
+      },
+      glyphMargin: false,
       automaticLayout: true,
       minimap: {
         enabled: false,
@@ -71,6 +81,7 @@ watch(
         editor.setModel(getModel(props.filepath))
       },
     )
+    watch(theme, () => monaco.editor.setTheme(theme.value))
   },
 )
 </script>
