@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Pane, Splitpanes } from 'splitpanes'
 import type { VirtualFile } from '~/structures/VirtualFile'
 import { filesToVirtualFsTree } from '~/templates/utils'
 // TODO: replace with Monaco with a real file tree.
@@ -10,6 +11,8 @@ const props = withDefaults(
     files: () => [],
   },
 )
+
+const ui = useUiState()
 
 const files = computed(() =>
   props.files.filter((file) => !isFileIgnored(file.filepath)),
@@ -36,6 +39,28 @@ function onTextInput() {
   // TODO: add throttle
   if (input.value != null) selectedFile?.value?.write(input.value)
 }
+
+function startDragging() {
+  ui.isPanelDragging = true
+}
+function endDragging(e: { size: number }[]) {
+  ui.isPanelDragging = false
+  ui.panelFileTree = e[0].size
+}
+// For panes size initialization on SSR
+const isMounted = useMounted()
+const panelInitFileTree = computed(
+  () =>
+    isMounted.value || {
+      width: `${ui.panelFileTree}%`,
+    },
+)
+const panelInitEditor = computed(
+  () =>
+    isMounted.value || {
+      width: `${100 - ui.panelFileTree}%`,
+    },
+)
 </script>
 
 <template>
@@ -46,21 +71,28 @@ function onTextInput() {
       <Icon name="i-ph-text-t-duotone" />
       <span class="text-sm">Editor</span>
     </div>
-    <div class="grid grid-cols-[1fr_2fr]">
-      <div class="flex h-full flex-col">
+    <Splitpanes @resize="startDragging" @resized="endDragging">
+      <Pane
+        class="flex h-full flex-col overflow-auto"
+        :size="ui.panelFileTree"
+        :style="panelInitFileTree"
+      >
         <PanelEditorFileSystemTree
           v-model="selectedFile"
           :directory="directory"
           :depth="-1"
         />
-      </div>
-      <PanelEditorMonaco
-        v-if="selectedFile"
-        v-model="input"
-        :filepath="selectedFile.filepath"
-        class="h-full w-full"
-        @change="onTextInput"
-      />
-    </div>
+      </Pane>
+      <div class="splitpanes__splitter" />
+      <Pane :size="100 - ui.panelFileTree" :style="panelInitEditor">
+        <PanelEditorMonaco
+          v-if="selectedFile"
+          v-model="input"
+          :filepath="selectedFile.filepath"
+          class="h-full w-full"
+          @change="onTextInput"
+        />
+      </Pane>
+    </Splitpanes>
   </div>
 </template>
