@@ -65,9 +65,16 @@ watch(
       },
       glyphMargin: false,
       automaticLayout: true,
+      folding: false,
+      lineDecorationsWidth: 10,
+      lineNumbersMinChars: 3,
       minimap: {
         enabled: false,
       },
+      padding: {
+        top: 8,
+      },
+      overviewRulerLanes: 0,
     })
 
     editor.onDidChangeModelContent(() => {

@@ -34,29 +34,23 @@ const sortedDirectory = computed(
 
 <template>
   <div>
-    <div
+    <button
       v-if="name"
-      class="hover:bg-active"
+      class="hover:bg-active flex w-full items-center gap-1 px-2 py-1 text-left text-sm"
       :style="{
-        paddingLeft: `${0.5 * props.depth}rem`,
+        paddingLeft: `${0.2 + 0.8 * props.depth}rem`,
       }"
+      :class="isFileSelected ? 'bg-active' : 'text-faded saturate-0'"
       @click="handleClick"
     >
-      <button
-        class="px2 py1 flex items-center gap-2 text-left"
-        :class="{
-          'text-primary': isFileSelected,
-        }"
-      >
-        <Icon v-if="directory && !isDirectoryOpen" name="ph:folder-duotone" />
-        <Icon
-          v-if="directory && isDirectoryOpen"
-          name="ph:folder-open-duotone"
-        />
-        <Icon v-if="!directory" name="ph:file-duotone" />
-        {{ name }}
-      </button>
-    </div>
+      <FileIcon
+        class="h-4 w-4 flex-none"
+        :path="name"
+        :is-directory="!!props.directory"
+        :is-directory-open="isDirectoryOpen"
+      />
+      <span class="ml-1">{{ name }}</span>
+    </button>
     <div v-if="directory" v-show="isDirectoryOpen">
       <PanelEditorFileSystemTree
         v-for="(child, chileName) in sortedDirectory"
