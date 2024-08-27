@@ -39,18 +39,27 @@ watch(
 const fitAddon = new FitAddon()
 terminal.loadAddon(fitAddon)
 watch(
-  () => play.stream,
-  (s) => {
-    if (!s) return
+  () => play.currentProcess,
+  (p) => {
+    if (!p) return
     try {
-      const reader = s.getReader()
+      const reader = p.output.getReader()
       function read() {
         reader.read().then(({ done, value }) => {
-          terminal.write(value)
+          if (value) terminal.write(value)
           if (!done) read()
         })
       }
       read()
+    } catch (e) {
+      console.error(e)
+    }
+
+    try {
+      const writer = p.input.getWriter()
+      terminal.onData((data) => {
+        writer.write(data)
+      })
     } catch (e) {
       console.error(e)
     }

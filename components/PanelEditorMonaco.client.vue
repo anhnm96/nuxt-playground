@@ -79,8 +79,9 @@ watch(
     })
 
     editor.onDidChangeModelContent(() => {
-      emit('update:modelValue', editor.getValue())
-      emit('change', editor.getValue())
+      const value = editor.getValue()
+      emit('update:modelValue', value)
+      emit('change', value)
     })
 
     watch(
