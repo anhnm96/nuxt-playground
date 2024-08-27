@@ -40,11 +40,18 @@ const sortedDirectory = computed(
       :style="{
         paddingLeft: `${0.2 + 0.8 * props.depth}rem`,
       }"
-      :class="isFileSelected ? 'bg-active' : 'text-faded saturate-0'"
+      :class="isFileSelected ? 'bg-active' : 'text-faded'"
       @click="handleClick"
     >
+      <Icon
+        v-if="directory"
+        :class="isDirectoryOpen && 'rotate-90'"
+        class="h-4 w-4 opacity-50 transition-transform duration-300"
+        name="ph:caret-right"
+      />
+      <div v-else class="h-4 w-4"></div>
       <FileIcon
-        class="h-4 w-4 flex-none"
+        class="h-4 w-4"
         :path="name"
         :is-directory="!!props.directory"
         :is-directory-open="isDirectoryOpen"

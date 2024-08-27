@@ -2,23 +2,23 @@
 const FILE_ICONS = [
   {
     match: /\.vue$/,
-    icon: { name: 'i-logos-vue' },
+    icon: { name: 'i-catppuccin-vue' },
   },
   {
     match: /nuxt\.config\.\w+$/,
-    icon: { name: 'i-logos-nuxt-icon ', class: 'scale-110' },
+    icon: { name: 'i-catppuccin-nuxt' },
   },
   {
     match: /package\.json$/,
-    icon: { name: 'i-file-icons-npm', class: 'text-red-500 scale-110' },
+    icon: { name: 'i-catppuccin-npm' },
   },
   {
     match: /\.[mc]?tsx?$/,
-    icon: { name: 'i-file-icons-typescript-alt', class: 'text-blue-500' },
+    icon: { name: 'i-catppuccin-typescript' },
   },
   {
     match: /\.[mc]?jsx?$/,
-    icon: { name: 'i-devicon-javascript' },
+    icon: { name: 'i-catppuccin-javascript' },
   },
 ]
 </script>
@@ -33,16 +33,23 @@ const props = defineProps<{
 const icon = computed(() => {
   if (props.isDirectory) {
     return props.isDirectoryOpen
-      ? { name: 'ph:folder-open-duotone', class: 'scale-120' }
-      : { name: 'ph:folder-simple-duotone', class: 'scale-120' }
+      ? { name: 'i-catppuccin-folder-open' }
+      : { name: 'i-catppuccin-folder' }
   }
   for (const { match, icon } of FILE_ICONS) {
     if (match.test(props.path)) return icon
   }
-  return { name: 'ph:file-duotone', class: 'scale-120' }
+  return { name: 'i-catppuccin-file' }
+})
+
+const colorMode = useColorMode()
+const cls = computed(() => {
+  return colorMode.value === 'light'
+    ? 'brightness-[.6] hue-rotate-180 invert saturate-200'
+    : ''
 })
 </script>
 
 <template>
-  <Icon :class="icon.class" :name="icon.name" />
+  <Icon class="scale-110" :class="[cls]" :name="icon.name" />
 </template>

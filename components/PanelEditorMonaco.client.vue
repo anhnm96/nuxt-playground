@@ -68,6 +68,7 @@ watch(
       folding: false,
       lineDecorationsWidth: 10,
       lineNumbersMinChars: 3,
+      fontFamily: 'DM Mono, monospace',
       minimap: {
         enabled: false,
       },
