@@ -40,6 +40,11 @@ export default defineNuxtConfig({
       },
     },
   },
+  runtimeConfig: {
+    public: {
+      buildTime: Date.now(),
+    },
+  },
   vite: {
     server: {
       // setup monaco
