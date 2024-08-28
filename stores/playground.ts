@@ -132,7 +132,8 @@ export const usePlaygroundStore = defineStore('playground', () => {
       error.value = {
         message: `Unable to run npm install, exit as ${installExitCode}`,
       }
-      throw new Error('Unable to run npm install')
+      console.error('Unable to run npm install')
+      return false
     }
 
     await wc.spawn('pnpm', ['run', 'dev', '--no-qr'])
