@@ -1,32 +1,14 @@
 import { VirtualFile } from '../structures/VirtualFile'
 import type { TemplateOptions } from './types'
 import { filesToWebContainerFs } from './utils'
+import template from '#build/templates/basic'
 
 export default function load(options: TemplateOptions = {}) {
   if (import.meta.server)
     throw new Error('This template can only be used on the client')
 
-  const rawInput: Record<string, string> = import.meta.glob(
-    [
-      './basic/**/*.*',
-      './basic/**/.layer-playground/**/*.*',
-      './basic/**/.nuxtrc',
-      './basic/**/.npmrc',
-    ],
-    {
-      query: '?raw',
-      import: 'default',
-      eager: true,
-    },
-  )
-
-  const rawFiles = {
-    ...Object.fromEntries(
-      Object.entries(rawInput).map(([key, value]) => [
-        key.replace('./basic/', ''),
-        value,
-      ]),
-    ),
+  const rawFiles: Record<string, string> = {
+    ...template,
     ...options.files,
   }
 

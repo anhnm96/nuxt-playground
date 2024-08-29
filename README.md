@@ -67,3 +67,9 @@ declare module 'splitpanes' {
 
 - components\PanelPreviewClient.client.vue
 - templates\basic\.layer-playground\plugins\playground.client.ts
+
+### Custom bundler for template
+
+- modules\template-loader.ts
+- templates\basic.ts
+- types\shim.d.ts

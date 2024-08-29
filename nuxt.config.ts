@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/google-fonts',
     '@pinia/nuxt',
+    '~/modules/template-loader',
   ],
   app: {
     head: {
