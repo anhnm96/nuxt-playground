@@ -11,7 +11,7 @@ const timeAgo = useTimeAgo(buildTime)
   <nav
     class="border-base flex items-center justify-between gap-1 border px-4 py-3 text-lg"
   >
-    <div>
+    <div class="flex items-baseline gap-1">
       <NuxtLink to="/" class="flex items-baseline gap-1 text-xl font-bold">
         <Icon name="i-logos-nuxt-icon" />
         <span
@@ -23,13 +23,15 @@ const timeAgo = useTimeAgo(buildTime)
           >Nuxt Playground</span
         >
       </NuxtLink>
-      <time
-        class="text-sm opacity-50"
-        :datetime="buildTime.toISOString()"
-        :title="buildTime.toLocaleString()"
-      >
-        Built {{ timeAgo }}
-      </time>
+      <ClientOnly>
+        <time
+          class="text-sm opacity-50"
+          :datetime="buildTime.toISOString()"
+          :title="buildTime.toLocaleString()"
+        >
+          Built {{ timeAgo }}
+        </time>
+      </ClientOnly>
     </div>
     <div class="flex items-center gap-1">
       <button

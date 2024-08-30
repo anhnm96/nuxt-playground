@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import '~/monaco/setup'
+import * as monaco from 'monaco-editor-core/esm/vs/editor/editor.api'
+import { shikiToMonaco } from '@shikijs/monaco'
+import { initMonaco } from '~/monaco/setup'
+import { reloadLanguageTools } from '~/monaco/env'
+import { getShiki } from '~/monaco/shiki'
 
 const props = defineProps<{
   modelValue: string
@@ -12,9 +15,15 @@ const emit = defineEmits<{
   (event: 'change', value: string): void
 }>()
 
+const play = usePlaygroundStore()
+
+initMonaco(play)
+
 const el = ref<HTMLDivElement>()
+
 const colorMode = useColorMode()
 const models = new Map<string, monaco.editor.ITextModel>()
+
 const language = computed(() => {
   const ext = props.filepath.split('.').pop()
   switch (ext) {
@@ -27,6 +36,7 @@ const language = computed(() => {
     case 'json':
       return 'json'
     case 'vue':
+      return 'vue'
     case 'html':
       return 'html'
     default:
@@ -34,7 +44,7 @@ const language = computed(() => {
   }
 })
 const theme = computed(() =>
-  colorMode.value === 'dark' ? 'vs-dark' : 'vs-light',
+  colorMode.value === 'dark' ? 'vitesse-dark' : 'vitesse-light',
 )
 
 function getModel(filepath: string) {
@@ -52,10 +62,15 @@ function getModel(filepath: string) {
   model.setValue(props.modelValue)
   return model
 }
+
 watch(
   () => el.value,
-  (value) => {
+  async (value) => {
     if (!value) return
+
+    const shiki = await getShiki()
+    shikiToMonaco(shiki, monaco)
+
     const editor = monaco.editor.create(value, {
       model: getModel(props.filepath),
       theme: theme.value,
@@ -76,6 +91,7 @@ watch(
         top: 8,
       },
       overviewRulerLanes: 0,
+      fixedOverflowWidgets: true,
     })
 
     editor.onDidChangeModelContent(() => {
@@ -84,12 +100,23 @@ watch(
       emit('change', value)
     })
 
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {})
+
     watch(
       () => props.filepath,
       () => {
         editor.setModel(getModel(props.filepath))
       },
     )
+
+    // Restart language tools when dependencies install finished
+    watch(
+      () => play.status,
+      (s) => {
+        if (s === 'start') reloadLanguageTools(play)
+      },
+    )
+
     watch(theme, () => monaco.editor.setTheme(theme.value))
   },
 )
