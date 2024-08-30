@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
-import type { VirtualFile } from '~/structures/VirtualFile'
 
 const ui = useUiState()
-const play = usePlaygroundStore()
 
 function startDragging() {
   ui.isPanelDragging = true
@@ -88,7 +86,7 @@ const panelInitTerminal = computed(
           :style="panelInitEditor"
           class="min-h-0"
         >
-          <PanelEditor :files="play.files" />
+          <PanelEditor />
         </Pane>
         <div class="splitpanes__splitter" />
         <Pane :size="ui.panelPreview" min-size="10" :style="panelInitPreview">

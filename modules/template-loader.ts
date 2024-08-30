@@ -1,8 +1,8 @@
 import { fileURLToPath } from 'node:url'
 import fs from 'node:fs/promises'
-import { addTemplate, defineNuxtModule } from '@nuxt/kit'
+import { addTemplate, addVitePlugin, defineNuxtModule } from '@nuxt/kit'
 import fg from 'fast-glob'
-import { relative } from 'pathe'
+import { relative, resolve } from 'pathe'
 
 export default defineNuxtModule({
   meta: {
@@ -33,6 +33,38 @@ export default defineNuxtModule({
         )
 
         return `export default ${JSON.stringify(filesMap)}`
+      },
+    })
+
+    addVitePlugin({
+      name: 'nuxt-playground:template-loader',
+      enforce: 'pre',
+      async transform(code, id) {
+        // automatically load .template files
+        if (!id.match(/\/\.template\/index\.ts/)) return
+
+        const filesDirs = resolve(id, '../files')
+        const files = await fg('**/*.*', {
+          ignore: ['**/node_modules/**', '**/.git/**', '**/.nuxt/**'],
+          dot: true,
+          cwd: filesDirs,
+          onlyFiles: true,
+          absolute: false,
+        })
+
+        const filesMap: Record<string, string> = {}
+
+        await Promise.all(
+          files.sort().map(async (filename) => {
+            const content = await fs.readFile(
+              resolve(filesDirs, filename),
+              'utf-8',
+            )
+            filesMap[filename] = content
+          }),
+        )
+
+        return `${code}\nmeta.files = ${JSON.stringify(filesMap)}\n`
       },
     })
   },

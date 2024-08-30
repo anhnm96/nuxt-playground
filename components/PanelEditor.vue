@@ -1,43 +1,36 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
-import type { VirtualFile } from '~/structures/VirtualFile'
 import { filesToVirtualFsTree } from '~/templates/utils'
-// TODO: replace with Monaco with a real file tree.
-const props = withDefaults(
-  defineProps<{
-    files: VirtualFile[]
-  }>(),
-  {
-    files: () => [],
-  },
-)
 
+const play = usePlaygroundStore()
 const ui = useUiState()
 
 const files = computed(() =>
-  props.files.filter((file) => !isFileIgnored(file.filepath)),
+  Array.from(play.files.values()).filter(
+    (file) => !isFileIgnored(file.filepath),
+  ),
 )
 const directory = computed(() => filesToVirtualFsTree(files.value))
-const selectedFile = ref<VirtualFile>()
-
-// Select the first file by default.
-watchEffect(() => {
-  if (selectedFile.value == null && files.value.length > 0)
-    selectFile(files.value[0])
-})
 
 const input = ref<string>('')
-function selectFile(file: VirtualFile) {
-  selectedFile.value = file
-}
 
-watch(selectedFile, (file) => {
-  input.value = file!.read()
-})
+watch(
+  () => play.fileSelected,
+  () => {
+    input.value = play.fileSelected?.read() || ''
+  },
+)
+
+watch(
+  () => play.mountedGuide,
+  () => {
+    input.value = play.fileSelected?.read() || ''
+  },
+)
 
 const onTextInput = useDebounceFn(_onTextInput, 500)
 function _onTextInput() {
-  if (input.value != null) selectedFile?.value?.write(input.value)
+  if (input.value != null) play?.fileSelected?.write(input.value)
 }
 
 function startDragging() {
@@ -78,17 +71,17 @@ const panelInitEditor = computed(
         :style="panelInitFileTree"
       >
         <PanelEditorFileSystemTree
-          v-model="selectedFile"
+          v-model="play.fileSelected"
           :directory="directory"
           :depth="-1"
         />
       </Pane>
       <div class="splitpanes__splitter" />
       <Pane :size="100 - ui.panelFileTree" :style="panelInitEditor">
-        <PanelEditorMonaco
-          v-if="selectedFile"
+        <LazyPanelEditorMonaco
+          v-if="play.fileSelected"
           v-model="input"
-          :filepath="selectedFile.filepath"
+          :filepath="play.fileSelected.filepath"
           class="h-full w-full"
           @change="onTextInput"
         />

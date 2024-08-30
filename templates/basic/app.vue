@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const a = ref('Nuxt')
+</script>
 
 <template>
-  <div>Test</div>
+  <div>Test {{ a.toUpperCase() }}</div>
 </template>

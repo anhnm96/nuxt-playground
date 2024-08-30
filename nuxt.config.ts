@@ -24,6 +24,9 @@ export default defineNuxtConfig({
   },
   typescript: {
     includeWorkspace: true,
+    tsConfig: {
+      include: ['../content/**/.template/**/*.ts'],
+    },
   },
   googleFonts: {
     families: {

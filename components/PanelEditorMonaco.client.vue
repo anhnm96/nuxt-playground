@@ -64,6 +64,14 @@ function getModel(filepath: string) {
 }
 
 watch(
+  () => props.modelValue,
+  (value) => {
+    const model = getModel(props.filepath)
+    model.setValue(value)
+  },
+)
+
+watch(
   () => el.value,
   async (value) => {
     if (!value) return

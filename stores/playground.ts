@@ -1,6 +1,8 @@
 import type { WebContainer, WebContainerProcess } from '@webcontainer/api'
 import type { Raw } from 'vue'
-import type { VirtualFile } from '~/structures/VirtualFile'
+import { dirname } from 'pathe'
+import { VirtualFile } from '~/structures/VirtualFile'
+import type { GuideMeta } from '~/types/guides'
 
 export const PlaygroundStatusOrder = [
   'init',
@@ -16,8 +18,10 @@ export const usePlaygroundStore = defineStore('playground', () => {
   const status = ref<PlaygroundStatus>('init')
   const error = shallowRef<{ message: string }>()
   const currentProcess = shallowRef<Raw<WebContainerProcess | undefined>>()
-  const files = shallowRef<Raw<VirtualFile[]>>([])
+  const files = shallowReactive<Raw<Map<string, VirtualFile>>>(new Map())
   const webcontainer = shallowRef<Raw<WebContainer>>()
+  const fileSelected = shallowRef<Raw<VirtualFile>>()
+  const mountedGuide = shallowRef<Raw<GuideMeta>>()
 
   const previewLocation = ref({
     origin: '',
@@ -31,6 +35,7 @@ export const usePlaygroundStore = defineStore('playground', () => {
   }
 
   const colorMode = useColorMode()
+  let mountPromise: Promise<void> | undefined
 
   // Mount the playground on the client
   if (import.meta.client) {
@@ -48,9 +53,8 @@ export const usePlaygroundStore = defineStore('playground', () => {
       )
 
       webcontainer.value = wc
-      files.value = _files
-
       _files.forEach((file) => {
+        files.set(file.filepath, file)
         file.wc = wc
       })
 
@@ -83,7 +87,7 @@ export const usePlaygroundStore = defineStore('playground', () => {
         })
       }
     }
-    mount()
+    mountPromise = mount()
   }
 
   let abortController: AbortController | undefined
@@ -191,11 +195,70 @@ export const usePlaygroundStore = defineStore('playground', () => {
     URL.revokeObjectURL(url)
   }
 
+  const guideDispose: (() => void | Promise<void>)[] = []
+
+  async function mountGuide(guide?: GuideMeta) {
+    await mountPromise
+
+    // Unmount the previous guide
+    await Promise.all(guideDispose.map((dispose) => dispose()))
+    guideDispose.length = 0
+
+    if (guide) {
+      // eslint-disable-next-line no-console
+      console.log('mounting guide', guide)
+
+      await Promise.all(
+        Object.entries(guide?.files || {}).map(async ([filepath, content]) => {
+          await webcontainer.value?.fs.mkdir(dirname(filepath), {
+            recursive: true,
+          })
+          await updateOrCreateFile(filepath, content)
+        }),
+      )
+    }
+
+    // if (status.value === 'ready')
+    //   status.value = 'start'
+    previewLocation.value.fullPath = guide?.startingUrl || '/'
+    fileSelected.value = files.get(guide?.startingFile || 'app.vue')
+    updatePreviewUrl()
+
+    mountedGuide.value = guide
+
+    return undefined
+
+    async function updateOrCreateFile(filepath: string, content: string) {
+      const file = files.get(filepath)
+      if (file) {
+        const oldContent = file.read()
+        await file.write(content)
+        guideDispose.push(async () => {
+          await file.write(oldContent)
+        })
+        return file
+      } else {
+        const newFile = new VirtualFile(filepath, content)
+        newFile.wc = webcontainer.value
+        await newFile.write(content)
+        files.set(filepath, newFile)
+        guideDispose.push(async () => {
+          files.delete(filepath)
+          await webcontainer.value!.fs.rm(filepath)
+        })
+        return newFile
+      }
+    }
+  }
+
   return {
     status,
     error,
     currentProcess,
     files,
+    fileSelected,
+    mountedGuide,
+    mountGuide,
     webcontainer,
     previewUrl,
     updatePreviewUrl,
