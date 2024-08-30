@@ -3,5 +3,5 @@ import 'splitpanes/dist/splitpanes.css'
 </script>
 
 <template>
-  <NuxtPage />
+  <NuxtPage page-key="playground" />
 </template>
