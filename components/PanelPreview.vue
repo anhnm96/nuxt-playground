@@ -20,7 +20,7 @@ function refreshIframe() {
 watch(
   () => play.status,
   (status) => {
-    if (status === 'ready' || status === 'start') refreshIframe()
+    if (status === 'ready' || status === 'polling') refreshIframe()
   },
   { flush: 'sync' },
 )

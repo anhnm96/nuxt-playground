@@ -45,31 +45,51 @@ function getTextClass(status: PlaygroundStatus) {
 <template>
   <div
     v-if="play.status !== 'ready'"
-    class="flex h-full flex-col items-center justify-center capitalize"
+    class="flex h-full flex-col items-center justify-center gap-2"
   >
+    <template v-if="play.status === 'interactive'">
+      <div class="flex items-center gap-2 text-lg">
+        <Icon name="i-ph-terminal-window-duotone" class="text-2xl" />
+        Interactive terminal mode
+      </div>
+      <button
+        title="Restart terminal"
+        class="hover:bg-active mx-1 flex items-center gap-1 rounded px-1 opacity-50 hover:text-blue-500 hover:opacity-100"
+        @click="play.restartServer()"
+      >
+        <Icon class="text-lg" name="i-ph-arrow-clockwise-duotone" />
+        Restart the server
+      </button>
+    </template>
     <div
+      v-else
       class="grid grid-cols-[max-content_1fr] items-center justify-center gap-2"
     >
       <Icon
         :class="getStatusIcon('init').class"
         :name="getStatusIcon('init').icon"
       />
-      <span :class="getTextClass('init')">Initialize WebContainer</span>
+      <span :class="getTextClass('init')">Initializing WebContainer</span>
       <Icon
         :class="getStatusIcon('mount').class"
         :name="getStatusIcon('mount').icon"
       />
-      <span :class="getTextClass('mount')">Mount files</span>
+      <span :class="getTextClass('mount')">Mounting files</span>
       <Icon
         :class="getStatusIcon('install').class"
         :name="getStatusIcon('install').icon"
       />
-      <span :class="getTextClass('install')">Install Dependencies</span>
+      <span :class="getTextClass('install')">Installing Dependencies</span>
       <Icon
         :class="getStatusIcon('start').class"
         :name="getStatusIcon('start').icon"
       />
-      <span :class="getTextClass('start')">Boot Nuxt Server</span>
+      <span :class="getTextClass('start')">Starting Nuxt Server</span>
+      <Icon
+        :class="getStatusIcon('polling').class"
+        :name="getStatusIcon('polling').icon"
+      />
+      <span :class="getTextClass('polling')">Waiting for Nuxt to ready</span>
     </div>
   </div>
 </template>

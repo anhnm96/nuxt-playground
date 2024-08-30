@@ -121,7 +121,7 @@ watch(
     watch(
       () => play.status,
       (s) => {
-        if (s === 'start') reloadLanguageTools(play)
+        if (s === 'ready') reloadLanguageTools(play)
       },
     )
 
