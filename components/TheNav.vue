@@ -35,7 +35,7 @@ const timeAgo = useTimeAgo(buildTime)
     </div>
     <div class="flex items-center gap-1">
       <button
-        v-if="play.status === 'ready'"
+        v-if="play.status === 'ready' && play.features.download !== false"
         class="hover:bg-active flex rounded p-2"
         title="Download as ZIP"
         @click="play.downloadZip()"
@@ -43,6 +43,7 @@ const timeAgo = useTimeAgo(buildTime)
         <Icon name="i-ph-download-duotone" class="text-2xl" />
       </button>
       <button
+        v-if="play.features.terminal !== false"
         class="hover:bg-active flex rounded p-2"
         :class="ui.showTerminal ? '' : 'opacity-50'"
         title="Toggle terminal"
